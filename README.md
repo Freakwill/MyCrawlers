@@ -11,7 +11,14 @@ She said it is important for her, since she will have a job with the program. He
 
 The code is simple or naive anyway. It will be improved if I get more skills.
 
-### example
+
+### Requirement
+
+    wordcloud
+    jieba
+    
+
+### Example
 ```python
     # at the beginning, you have to import requests and BeautifulSoup
     import jiani
