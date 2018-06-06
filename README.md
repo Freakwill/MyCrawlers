@@ -7,8 +7,7 @@ My Crawlers for Movies、Information、Encyclopedia...
 
 A module for fetching information of movies from douban.
 
-A girl who named Jiani asked me to help her to write a program fetching information of moives from douban.
-She said it is important for her, since she will get a job with the program. Hence, I name the module jiani. Best wishes for her.
+A girl who named Jiani asked me to help her to write a program fetching information of moives from douban. So far, she does not master the skill of programming. She said it is important for her, since she will get a job with the program after graduate. Hence, I name the module jiani.
 
 The code is simple (or naive) anyway. It will be improved if I get more skills.
 
