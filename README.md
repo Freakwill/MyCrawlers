@@ -41,3 +41,13 @@ a module for fetching information from baidu baike
 
 get products from taobao under certain conditions.
 just run the file.
+
+## pybrainyquote
+
+get quotes from pybrainyquote
+
+try it with `Quote.today()`
+
+## myweb
+
+It is just an excercise.
