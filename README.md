@@ -11,10 +11,12 @@ She said it is important for her, since she will have a job with the program. He
 
 ### example
 ```python
+    # at the beginning, you have to import requests and BeautifulSoup
+    import jiani
     url = DOUBAN_MOVIE_URL + '/subject/26816017'  # 居里夫人 Marie Curie -> url ???
     resp = requests.get(url, headers=header_dict)
     bs = BeautifulSoup(resp.content.decode('utf-8'), "lxml")
-    movie = Movie.fromSoup(bs)
+    movie = jiani.Movie.fromSoup(bs)
     print(movie)
     print(movie.stat())
     movie.wordCould()  # generate word cloud
