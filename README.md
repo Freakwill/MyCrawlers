@@ -6,10 +6,11 @@ My Crawlers for Movies、Information、Encyclopedia...
 ## jiani
 
 A module for fetching information of movies from douban.
-A girl who named Jiani asked me to help her to write a program fetching information of moives from douban.
-She said it is important for her, since she will have a job with the program. Hence, I name the module jiani.
 
-The code is simple or naive anyway. It will be improved if I get more skills.
+A girl who named Jiani asked me to help her to write a program fetching information of moives from douban.
+She said it is important for her, since she will get a job with the program. Hence, I name the module jiani. Best wishes for her.
+
+The code is simple (or naive) anyway. It will be improved if I get more skills.
 
 
 ### Requirement
@@ -30,6 +31,8 @@ The code is simple or naive anyway. It will be improved if I get more skills.
     print(movie.stat())
     movie.wordCould()  # generate word cloud
 ```
+
+I will try to define a mapping 'keyword -> urls' where urls are the result of searching with some keyword.
 
 ## baidupedia
 
