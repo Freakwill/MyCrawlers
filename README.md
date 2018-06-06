@@ -27,3 +27,9 @@ The code is simple or naive anyway. It will be improved if I get more skills.
 ## baidupedia
 
 a module for fetching information from baidu baike
+
+
+## taobao
+
+get products from taobao under certain conditions.
+just run the file.
