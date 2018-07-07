@@ -30,6 +30,8 @@ The code is simple (or naive) anyway. It will be improved if I get more skills.
     movie.wordCould()  # generate word cloud
 ```
 
+![](https://github.com/Freakwill/MyCrawlers/blob/master/居里夫人%20Marie%20Curie(2016).png?raw=true)
+
 I will try to define a mapping 'keyword -> urls' where urls are the result of searching with some keyword.
 
 ## baidupedia
@@ -51,3 +53,8 @@ try it with `Quote.today()`
 ## myweb
 
 It is just an excercise.
+
+
+## zol
+
+find information on http://detail.zol.com.cn
