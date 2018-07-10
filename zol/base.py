@@ -9,7 +9,6 @@ digit_rx = re.compile(r'\d+')
 decimal_rx = re.compile(r'\d+(\.\d+)?')
 page_rx = re.compile(r'\d/(\d+)')
 
-name_rx = re.compile(r'(?P<name>\w+ ?\w+((-|\/)\w+)?)(?P<anothername>\(\w+\))? +(?P<description>\w+)')
 # print(name_rx.match('heeh 232-kk/sss lili')['name'])
 
 def url2soup(url):
