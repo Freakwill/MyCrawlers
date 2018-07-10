@@ -58,3 +58,11 @@ It is just an excercise.
 ## zol
 
 find information on http://detail.zol.com.cn
+
+```python
+iceboxes = IceBoxes.read_url()
+df =pd.DataFrame([p.toDict() for p in iceboxes])
+df.to_excel('iceboxes.xls')
+```
+
+![](https://github.com/Freakwill/MyCrawlers/blob/master/zol/icebox_price.png?raw=true)
