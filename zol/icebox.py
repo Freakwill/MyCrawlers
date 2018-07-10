@@ -9,11 +9,17 @@ import base
 import product
 
 
+name_rx = re.compile(r'(?P<name>\w+ ?\w+((-|\/)\w+)*)(?P<anothername>\(|（\w+(\)|）)?)? *(?P<description>\w+)')
+
+HOME = "http://detail.zol.com.cn"
+
+
 class IceBoxes(product.Product):
+
     pages = 15
-    
+
     @staticmethod
-    def read_url(URL):
+    def read_url():
         iceboxes = []
         for k in range(1, pages):
 
@@ -53,14 +59,9 @@ class IceBoxes(product.Product):
                     for table in paras.find_all('table')[:-1] for para in table.find_all('tr')[1:]}
                     iceboxes.append(p)
         return iceboxes
-                    
 
 
-name_rx = re.compile(r'(?P<name>\w+ ?\w+((-|\/)\w+)*)(?P<anothername>\(|（\w+(\)|）)?)? *(?P<description>\w+)')
-
-HOME = "http://detail.zol.com.cn"
-
-iceboxes = IceBoxes.read_url(HOME)
+iceboxes = IceBoxes.read_url()
 df =pd.DataFrame([p.toDict() for p in iceboxes])
 df.to_excel('iceboxes.xls')
 
