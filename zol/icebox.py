@@ -8,8 +8,10 @@ import pandas as pd
 import base
 import product
 
+quantities = {'price', '产品重量', '冷冻室容积', '冷藏室容积', '制冷能力', '噪声值', '额定耗电量'}
 
 name_rx = re.compile(r'(?P<name>\w+ ?\w+((-|\/)\w+)*)(?P<anothername>\(|（\w+(\)|）)?)? *(?P<description>\w+)')
+size_rx = re.compile(r'\d+×\d+\d+')
 
 HOME = "http://detail.zol.com.cn"
 
@@ -17,6 +19,7 @@ HOME = "http://detail.zol.com.cn"
 class IceBoxes(product.Product):
 
     pages = 15
+    quantities = {}
 
     @staticmethod
     def read_url():
@@ -61,7 +64,9 @@ class IceBoxes(product.Product):
         return iceboxes
 
 
-iceboxes = IceBoxes.read_url()
-df =pd.DataFrame([p.toDict() for p in iceboxes])
-df.to_excel('iceboxes.xls')
+if __name__ == '__main__':
+    
+    iceboxes = IceBoxes.read_url()
+    df =pd.DataFrame([p.toDict() for p in iceboxes])
+    df.to_excel('iceboxes.xls')
 
