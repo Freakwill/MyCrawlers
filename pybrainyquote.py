@@ -5,20 +5,19 @@ import random
 
 import bs4
 import requests
+import furl
 
 
-HOME = "http://www.brainyquote.com"
+HOME = furl.furl("http://www.brainyquote.com")
 
-def tosuffix(s):
-    return ''.join(c.lower() for c in s if c.isalpha())
+# def tosuffix(s):
+#     return ''.join(c.lower() for c in s if c.isalpha())
+TOPICS = ['Motivational', 'Friendship', 'Love', 'Smile', 'Life', 'Inspirational', 'Family', 'Nature', 'Positive', 'Attitude']
 
-
-def get_url(suffix):
-    return HOME + '/' + suffix
 
 def get_quoteList(url, filter=None):
     response = requests.get(url)
-    soup = bs4.BeautifulSoup(response.text, "html.parser")
+    soup = bs4.BeautifulSoup(response.text, "lxml")
     quotes = soup.find('div', {'id':'quotesList'})
     quoteList = []
     for q in quotes.children:
@@ -32,29 +31,49 @@ def get_quoteList(url, filter=None):
 
 
 def get_topicList():
-    url = HOME +'/topics'
+    url = HOME / 'topics'
     response = requests.get(url)
-    soup = bs4.BeautifulSoup(response.text, "html.parser")
+    soup = bs4.BeautifulSoup(response.text, "lxml")
     topics = soup.find_all('div', {'class':'row bq_left'})[1]
     return [t.get_text() for t in topics.find_all('span', {'class':'topicContentName'})]
 
 def get_PopTopicList():
-    url = HOME +'/topics'
+    url = HOME / 'topics'
     response = requests.get(url)
-    soup = bs4.BeautifulSoup(response.text, "html.parser")
+    soup = bs4.BeautifulSoup(response.text, "lxml")
     topics = soup.find_all('div', {'class':'row bq_left'})[1]
     return [t.get_text() for t in topics.find_all('span', {'class':'topicContentName'}) if t.next_sibling.next_sibling.name == 'img']
+
+
+def get_authorList():
+    # get the list of authors
+    url = HOME / 'authors'
+    response = requests.get(url)
+    soup = bs4.BeautifulSoup(response.text, "lxml")
+    return [t.text.strip() for t in soup.find_all('span', {'class':'authorContentName'})]
 
 
 # class BaseSearcher filter
 
 class Quote(object):
-    '''Quote has 4 (principal) propteries
-    text: the content
-    topic: which topic
-    author: the author of the quote
-    info: info'''
-    def __init__(self, text='', topic=None, author='', info=''):
+    '''Quote class
+    
+    Quotes of famous peaple
+
+    Example
+    -------
+    >>> q = Quote.today()
+    >>> print(q)   # 2018-10-25
+    >>> He that lives upon hope will die fasting. --- Benjamin Franklin
+    '''
+    def __init__(self, text='', topic='', author='', info=''):
+        '''
+        Keyword Arguments:
+            text {str} -- [content of the quote] (default: {''})
+            topic {str} -- [topic of the quote] (default: {''})
+            author {str} -- [the author] (default: {''})
+            info {str} -- related information (default: {''})
+        '''
         self.text = text
         self.topic = topic
         self.author = author
@@ -80,13 +99,16 @@ class Quote(object):
     def __setstate__(self, state):
         self.text, self.topic, self.author, self.info = state
 
-
     @staticmethod
     def random(topic='', author='', index=''):
-        pass
+        return random.choice(Quote.find_all(topic, author, index))
 
     @staticmethod
     def find(topic='', author='', index=''):
+        pass
+
+    @staticmethod
+    def find_all(topic='', author='', index=''):
         pass
 
     @staticmethod
@@ -97,15 +119,24 @@ class Quote(object):
 
     @staticmethod
     def today(topic=None):
-        url = 'https://www.brainyquote.com/quote_of_the_day'
+        # get today quote
+        url = HOME / 'quote_of_the_day'
         response = requests.get(url)
-        soup = bs4.BeautifulSoup(response.text, "html.parser")
-        if topic:
-            quote_of_the_day = topic.capitalize() + ' ' + 'Quote of the Day'
+        soup = bs4.BeautifulSoup(response.text, "lxml")
+        container = soup.find('div', {'class': 'container bqQOTD'})
+
+        if isinstance(topic, str):
+            quote_of_the_day = [topic.capitalize()]
+        elif isinstance(topic, (tuple, list, set)):
+            quote_of_the_day = [t.capitalize() for t in topic]
         else:
-            quote_of_the_day = 'Quote of the Day'
+            quote_of_the_day = ['']
         def f(tag):
-            return tag.find('h2', {'class':'qotd-h2'}) and tag.find('h2', {'class':'qotd-h2'}).get_text() == quote_of_the_day
-        return Quote.fromTag(soup.find(f))
+            try:
+                t = tag.find('h2', {'class':'qotd-h2'}).text.partition('Quote of the Day')[0]
+                return t in quote_of_the_day
+            except:
+                pass
+        return Quote.fromTag(container.find(f))
 
 
