@@ -15,29 +15,31 @@ HOME = furl.furl("http://www.brainyquote.com")
 TOPICS = ['Motivational', 'Friendship', 'Love', 'Smile', 'Life', 'Inspirational', 'Family', 'Nature', 'Positive', 'Attitude']
 
 
-def get_quoteList(url, filter=None):
+def get_quotes(url, filter=None):
     response = requests.get(url)
     soup = bs4.BeautifulSoup(response.text, "lxml")
     quotes = soup.find('div', {'id':'quotesList'})
-    quoteList = []
+    quotes = []
     for q in quotes.children:
         if isinstance(q, bs4.element.Tag):
             text = q.find('a', {'title': 'view quote'})
             author = q.find('a', {'title': 'view author'})
             if text and author:
                 quote = Quote(text=text.get_text(), author=author.get_text())
-                quoteList.append(quote)
-    return quoteList
+                quotes.append(quote)
+    return quotes
 
 
-def get_topicList():
+def get_topics():
+    # get all topics
     url = HOME / 'topics'
     response = requests.get(url)
     soup = bs4.BeautifulSoup(response.text, "lxml")
     topics = soup.find_all('div', {'class':'row bq_left'})[1]
     return [t.get_text() for t in topics.find_all('span', {'class':'topicContentName'})]
 
-def get_PopTopicList():
+def get_popular_topics():
+    # get a list of popular topics
     url = HOME / 'topics'
     response = requests.get(url)
     soup = bs4.BeautifulSoup(response.text, "lxml")
@@ -45,7 +47,7 @@ def get_PopTopicList():
     return [t.get_text() for t in topics.find_all('span', {'class':'topicContentName'}) if t.next_sibling.next_sibling.name == 'img']
 
 
-def get_authorList():
+def get_authors():
     # get the list of authors
     url = HOME / 'authors'
     response = requests.get(url)
