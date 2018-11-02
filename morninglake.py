@@ -56,7 +56,7 @@ class Crawler(object):
             tag = soup.find(tag)
         return tag.find_all(*args, **kwargs)
 
-    def search(self, goal=None, *args, **kwargs):
+    def search(self, check=None, *args, **kwargs):
 
         from simpleai.search import SearchProblem, astar
 
@@ -71,14 +71,21 @@ class Crawler(object):
                  if a.has_attr('href') and a['href'] != '/' and a['href'] != url]
 
             def is_goal(self, url):
-                if goal is None:
+                if check is None or check(url):
                     soup = url2soup(url)
-                    return soup.find(*args, **kwargs)
+                    a = soup.find(*args, **kwargs)
+                if a:
+                    self.result = a
+                    return True
                 else:
-                    return goal(url)
+                    return False
 
             def state_representation(self, url):
                 return 'URL = ' + url
+
+            problem = Problem(initial_state=self.url)
+
+            result = astar(problem)
 
 
 c = Crawler(url='https://blog.csdn.net')
